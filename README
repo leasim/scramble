@@ -1,0 +1,25 @@
+Name: scramble
+
+Info
+
+C program to scramble and unscramble your files. DO NOT USE FOR
+SENSITIVE FILES, USE REAL ENCRYPTION!
+
+Usage
+
+compile: make all
+use: ./scramble <file> <hex number>
+example: ./scramble secret.txt abad1dea
+
+Notes
+
+Again: USE REAL ENCRYPTION!
+<hex number> must be an even number of hex digits.
+Not tested with more than 8 hex digits.
+If file given has been previously scrambled, the program should
+produce the original file if the correct hex number is given.
+
+TODO
+
+Allow for naming of output file.
+A lot of other stuff
