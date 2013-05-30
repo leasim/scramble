@@ -3,6 +3,7 @@
 #include <string.h>
 
 int getKey(char usrKey[], unsigned char ** keys);
+void clean_keys(char usrKey[], unsigned char **keys);
 
 int main(int argc, char * argv[])
 {
@@ -60,9 +61,26 @@ int main(int argc, char * argv[])
 	free(outname);
 	
 	if(totalKeys != -1)
+	{
+		clean_keys(argv[2], &keys);
 		free(keys);
+	}
+	else
+		memset(argv[2], '\0', strlen(argv[2]));
 
 	return 0;
+}
+
+void clean_keys(char usrKey[], unsigned char ** keys)
+{
+	//fill with zeroes
+	unsigned char * k;
+	int i, size;
+
+	size = strlen(usrKey);
+
+	memset((void *)usrKey, '\0', size);
+	memset((void *)*keys, '\0', size / 2);
 }
 
 int getKey(char usrKey[], unsigned char ** keys)
@@ -72,24 +90,21 @@ int getKey(char usrKey[], unsigned char ** keys)
 	int i = 0, tmp = 0;
 	unsigned char * tkp;
 
-	if(size % 2 == 1)	//error!
+	if(size % 2 == 1 || size == 0)	//error!
 	{
 		keys = NULL;
 		return -1;
 	}
 
 	*keys = (unsigned char *)malloc(sizeof(unsigned char) * numKeys);
-	tkp = *keys;
+	if(*keys != NULL)
+		tkp = *keys;
 
 	while(usrKey[i] != '\0')
 	{
 		switch(usrKey[i])
 		{
-			case '0':
-				if(i % 2 == 0)
-					tmp |= 0x00;
-				else
-					tmp |= 0x00;
+			case '0':	//'xor'ing with 0 does not change prev value
 				break;
 			case '1':
 				if(i % 2 == 0)
